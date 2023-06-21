@@ -112,6 +112,9 @@ void realizar_opcion(int opcion, MYSQL *conn)
 	case 13:
 		agregar_genero(conn);
 		break;
+	case 14:
+		agregar_personaje(conn);
+		break;
 	default:
 		printf("Opcion inexistente!");
 		break;
@@ -156,7 +159,7 @@ void imprimir_peliculas_titulo_original(MYSQL *conn)
 {
 	MYSQL_RES *res;
 	MYSQL_ROW row;
-	if (mysql_query(conn, "SELECT P.ID, T.Titulo FROM Peliculas P INNER JOIN Titulos T ON P.ID = T.id_Pelicula WHERE T.id_Idioma = P.id_IdiomaOriginal;"))
+	if (mysql_query(conn, "SELECT P.ID, T.Titulo FROM Peliculas P INNER JOIN Titulos T ON P.ID = T.id_pelicula WHERE T.id_idioma = P.id_idiomaOriginal;"))
 	{
 		fprintf(stderr, "%s\n", mysql_error(conn));
 		exit(1);
@@ -218,6 +221,23 @@ void imprimir_sagas(MYSQL *conn)
 	while ((row = mysql_fetch_row(res)) != NULL)
 		printf("%s\t|\t%s\n", row[0], row[1]);
 	mysql_free_result(res);
+}
+
+void imprimir_tipos(MYSQL *conn)
+{
+        MYSQL_RES *res;
+        MYSQL_ROW row;
+        if (mysql_query(conn, "select * from TiposPersonajes;"))
+        {
+                fprintf(stderr, "%s\n", mysql_error(conn));
+                exit(1);
+        }
+        res = mysql_use_result(conn);
+        printf("ID\t|\tDescripcion\n");
+        printf("-----------------------------------------------------\n");
+        while ((row = mysql_fetch_row(res)) != NULL)
+                printf("%s\t|\t%s\n", row[0], row[1]);
+        mysql_free_result(res);
 }
 
 void imprimir_premios(MYSQL *conn)
@@ -283,7 +303,7 @@ void agregar_saga(MYSQL *conn)
 	char saga[50];
 	printf("Ingrese el nombre de la nueva saga:");
 	scanf("%[^\n]", saga);
-	char query[1000] = "INSERT INTO Sagas (NombreOriginal) VALUES ('";
+	char query[1000] = "INSERT INTO Sagas (Descripcion) VALUES ('";
 	char *parteFinal = "');";
 	strcat(query, saga);
 	strcat(query, parteFinal);
@@ -407,8 +427,25 @@ void agregar_pelicula(MYSQL *conn)
 	while (getchar() != '\n')
 		;
 
-	sprintf(query, "INSERT INTO Peliculas (id_IdiomaOriginal, AnioPublicacion, Duracion, Presupuesto, RecaudacionTaquilla, Rating, Resumen) VALUES ('%d', '%s', '%d', '%d', '%d', '%s', '%s');", idioma, fechaPublicacion, duracion, presupuesto, recaudacion, rating, resumen);
+	sprintf(query, "INSERT INTO Peliculas (id_idiomaOriginal, AnioPublicacion, Duracion, Presupuesto, RecaudacionTaquilla, Rating, Resumen) VALUES ('%d', '%s', '%d', '%d', '%d', '%s', '%s');", idioma, fechaPublicacion, duracion, presupuesto, recaudacion, rating, resumen);
 	mysql_execute_query(conn, query);
+}
+
+void imprimir_participacion_peliculaTitulo_personaNombre(MYSQL *conn)
+{
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	if (mysql_query(conn, "SELECT Part.ID AS ID, Titulos.Titulo AS Pelicula, CONCAT(Personas.Nombre, ' ', Personas.Apellido) AS Persona FROM Participacion Part INNER JOIN Personas ON Part.id_Persona = Personas.ID INNER JOIN Peliculas ON Part.id_Pelicula = Peliculas.ID INNER JOIN Titulos ON Peliculas.ID = Titulos.id_pelicula WHERE Titulos.id_idioma = Peliculas.id_idiomaOriginal;"))
+	{
+		fprintf(stderr, "%s\n", mysql_error(conn));
+		exit(1);
+	}
+	res = mysql_use_result(conn);
+	printf("ID\t|\tPelicula|\tPersona\n");
+	printf("-----------------------------------------------------\n");
+	while ((row = mysql_fetch_row(res)) != NULL)
+		printf("%s\t|\t%s\t|\t%s\n", row[0], row[1], row[2]);
+	mysql_free_result(res);
 }
 
 void agregar_titulo_pelicula(MYSQL *conn)
@@ -435,7 +472,7 @@ void agregar_titulo_pelicula(MYSQL *conn)
 	while (getchar() != '\n')
 		;
 
-	sprintf(query, "INSERT INTO Titulos (Titulo, id_Idioma, id_Pelicula) VALUES ('%s', '%d', '%d')", titulo, idioma, pelicula);
+	sprintf(query, "INSERT INTO Titulos (Titulo, id_idioma, id_pelicula) VALUES ('%s', '%d', '%d')", titulo, idioma, pelicula);
 	mysql_execute_query(conn, query);
 }
 
@@ -463,7 +500,7 @@ void agregar_titulo_saga(MYSQL *conn)
 	while (getchar() != '\n')
 		;
 
-	sprintf(query, "INSERT INTO TitulosSagas (Titulo, id_Idioma, id_Saga) VALUES ('%s', '%d', '%d')", titulo, idioma, saga);
+	sprintf(query, "INSERT INTO TitulosSagas (Titulo, id_idioma, id_saga) VALUES ('%s', '%d', '%d')", titulo, idioma, saga);
 	mysql_execute_query(conn, query);
 }
 
@@ -524,11 +561,11 @@ void agregar_nominacion_pelicula(MYSQL *conn)
 
 	if (estado == 1)
 	{
-		sprintf(query, "INSERT INTO Nominaciones (id_Pelicula, id_Premio, Estado) VALUES ('%d', '%d', '%s')", pelicula, premio, "Nominada");
+		sprintf(query, "INSERT INTO Nominaciones (id_pelicula, id_premio, Estado) VALUES ('%d', '%d', '%s')", pelicula, premio, "Nominada");
 	}
 	else
 	{
-		sprintf(query, "INSERT INTO Nominaciones (id_Pelicula, id_Premio, Estado) VALUES ('%d', '%d', '%s')", pelicula, premio, "Ganadora");
+		sprintf(query, "INSERT INTO Nominaciones (id_pelicula, id_premio, Estado) VALUES ('%d', '%d', '%s')", pelicula, premio, "Ganadora");
 	}
 
 	mysql_execute_query(conn, query);
@@ -582,6 +619,30 @@ void agregar_genero_pelicula(MYSQL *conn)
 	while (getchar() != '\n')
 		;
 
-	sprintf(query, "INSERT INTO GenerosPorPelicula (id_Pelicula, id_Genero) VALUES ('%d', '%d');", pelicula, genero);
+	sprintf(query, "INSERT INTO GenerosPorPelicula (id_pelicula, id_genero) VALUES ('%d', '%d');", pelicula, genero);
+	mysql_execute_query(conn, query);
+}
+
+void agregar_personaje(MYSQL* conn){
+	int persona;
+	int tipo;
+	char personaje[26];
+	char query[1000];
+
+	imprimir_participacion_peliculaTitulo_personaNombre(conn);
+	printf("Elija la persona y en  pelicula participa:");
+	scanf("%d", &persona);
+	while(getchar() != '\n');
+
+	imprimir_tipos(conn);
+	printf("Elija el tipo del personaje:");
+	scanf("%d", &tipo);
+	while(getchar() != '\n');
+
+	printf("Escriba nombre del personaje:");
+	scanf("%[^\n]", personaje);
+	while(getchar() != '\n');
+
+	sprintf(query, "INSERT INTO ActoresPersonajes (id_Participacion, personaje, id_Tipo) VALUES ('%d', '%s', '%d')", persona, personaje, tipo);
 	mysql_execute_query(conn, query);
 }

@@ -7,6 +7,7 @@ void imprimir_menu();
 void realizar_opcion(int, MYSQL *);
 
 // el nombre dice que hace
+void imprimir_tipos(MYSQL *);
 void imprimir_idiomas(MYSQL *);
 void imprimir_roles(MYSQL *);
 void imprimir_peliculas(MYSQL *);
@@ -14,6 +15,7 @@ void imprimir_generos(MYSQL *);
 void imprimir_sagas(MYSQL *);
 void imprimir_premios(MYSQL *);
 void imprimir_peliculas_titulo_original(MYSQL *);
+void imprimir_participacion_peliculaTitulo_personaNombre(MYSQL *);
 
 // Opcion 1 (agregar idioma)
 void agregar_idioma(MYSQL *);
@@ -53,5 +55,8 @@ void agregar_persona_participacion_pelicula(MYSQL *);
 
 // Opcion 13 (agregar genero a pelicula)
 void agregar_genero_pelicula(MYSQL *);
+
+// Opcion 14 (agregar personaje a persona)
+void agregar_personaje(MYSQL*);
 
 #endif

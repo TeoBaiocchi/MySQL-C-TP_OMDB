@@ -23,11 +23,13 @@ DROP TABLE IF EXISTS `ActoresPersonajes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ActoresPersonajes` (
-  `id_participacion` int NOT NULL DEFAULT '1',
-  `personaje` varchar(50) NOT NULL DEFAULT '-',
-  `Tipo` varchar(20) NOT NULL DEFAULT 'N/E',
-  KEY `id_participacion` (`id_participacion`),
-  CONSTRAINT `ActoresPersonajes_ibfk_1` FOREIGN KEY (`id_participacion`) REFERENCES `Participacion` (`ID`)
+  `id_Participacion` int NOT NULL DEFAULT '1',
+  `Personaje` varchar(50) NOT NULL DEFAULT '-',
+  `id_Tipo` int NOT NULL DEFAULT '1',
+  KEY `id_Participacion` (`id_Participacion`),
+  KEY `id_Tipo` (`id_Tipo`),
+  CONSTRAINT `ActoresPersonajes_ibfk_1` FOREIGN KEY (`id_Participacion`) REFERENCES `Participacion` (`ID`),
+  CONSTRAINT `ActoresPersonajes_ibfk_2` FOREIGN KEY (`id_Tipo`) REFERENCES `TiposPersonajes` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -37,6 +39,7 @@ CREATE TABLE `ActoresPersonajes` (
 
 LOCK TABLES `ActoresPersonajes` WRITE;
 /*!40000 ALTER TABLE `ActoresPersonajes` DISABLE KEYS */;
+INSERT INTO `ActoresPersonajes` VALUES (2,'Marty McFly',1);
 /*!40000 ALTER TABLE `ActoresPersonajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,7 +162,7 @@ CREATE TABLE `Participacion` (
   CONSTRAINT `Participacion_ibfk_1` FOREIGN KEY (`id_Pelicula`) REFERENCES `Peliculas` (`ID`),
   CONSTRAINT `Participacion_ibfk_2` FOREIGN KEY (`id_Persona`) REFERENCES `Personas` (`ID`),
   CONSTRAINT `Participacion_ibfk_3` FOREIGN KEY (`id_Rol`) REFERENCES `Roles` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,7 +171,7 @@ CREATE TABLE `Participacion` (
 
 LOCK TABLES `Participacion` WRITE;
 /*!40000 ALTER TABLE `Participacion` DISABLE KEYS */;
-INSERT INTO `Participacion` VALUES (1,1,2,1);
+INSERT INTO `Participacion` VALUES (1,1,2,1),(2,1,3,4);
 /*!40000 ALTER TABLE `Participacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,7 +250,7 @@ CREATE TABLE `Personas` (
   `Genero` varchar(15) NOT NULL DEFAULT 'N/E',
   `LugarDeNacimiento` varchar(255) NOT NULL DEFAULT 'N/E',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,7 +259,7 @@ CREATE TABLE `Personas` (
 
 LOCK TABLES `Personas` WRITE;
 /*!40000 ALTER TABLE `Personas` DISABLE KEYS */;
-INSERT INTO `Personas` VALUES (1,'N/E','-','1900-01-01','N/E','N/E'),(2,'Robert','Zemeckis','1952-05-14','Masculino','Chicago,Illinois,EEUU');
+INSERT INTO `Personas` VALUES (1,'N/E','-','1900-01-01','N/E','N/E'),(2,'Robert','Zemeckis','1952-05-14','Masculino','Chicago,Illinois,EEUU'),(3,'Michael','Fox','1961-06-09','Masculino','Edmonton, Canada');
 /*!40000 ALTER TABLE `Personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,6 +336,30 @@ INSERT INTO `Sagas` VALUES (1,'Indefinido'),(2,'Indiana Jones'),(3,'Star Wars'),
 UNLOCK TABLES;
 
 --
+-- Table structure for table `TiposPersonajes`
+--
+
+DROP TABLE IF EXISTS `TiposPersonajes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `TiposPersonajes` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Tipo` varchar(25) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `TiposPersonajes`
+--
+
+LOCK TABLES `TiposPersonajes` WRITE;
+/*!40000 ALTER TABLE `TiposPersonajes` DISABLE KEYS */;
+INSERT INTO `TiposPersonajes` VALUES (1,'Principal'),(2,'Secundario'),(3,'Extra');
+/*!40000 ALTER TABLE `TiposPersonajes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Titulos`
 --
 
@@ -397,4 +424,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-20 20:44:39
+-- Dump completed on 2023-06-20 23:57:38
