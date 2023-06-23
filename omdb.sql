@@ -39,7 +39,7 @@ CREATE TABLE `ActoresPersonajes` (
 
 LOCK TABLES `ActoresPersonajes` WRITE;
 /*!40000 ALTER TABLE `ActoresPersonajes` DISABLE KEYS */;
-INSERT INTO `ActoresPersonajes` VALUES (2,'Marty McFly',1);
+INSERT INTO `ActoresPersonajes` VALUES (2,'Marty McFly',1),(3,'Dr. Emmett Brown',1),(4,'Lorraine Baines McFly',2),(5,'George McFly',2);
 /*!40000 ALTER TABLE `ActoresPersonajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,7 +162,7 @@ CREATE TABLE `Participacion` (
   CONSTRAINT `Participacion_ibfk_1` FOREIGN KEY (`id_Pelicula`) REFERENCES `Peliculas` (`ID`),
   CONSTRAINT `Participacion_ibfk_2` FOREIGN KEY (`id_Persona`) REFERENCES `Personas` (`ID`),
   CONSTRAINT `Participacion_ibfk_3` FOREIGN KEY (`id_Rol`) REFERENCES `Roles` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,7 +171,7 @@ CREATE TABLE `Participacion` (
 
 LOCK TABLES `Participacion` WRITE;
 /*!40000 ALTER TABLE `Participacion` DISABLE KEYS */;
-INSERT INTO `Participacion` VALUES (1,1,2,1),(2,1,3,4);
+INSERT INTO `Participacion` VALUES (1,1,2,1),(2,1,3,4),(3,1,4,4),(4,1,5,4),(5,1,6,4),(6,1,2,6),(7,1,7,6),(8,1,7,2),(9,1,8,3),(10,2,3,4),(11,2,4,4),(12,3,3,4),(13,3,4,4);
 /*!40000 ALTER TABLE `Participacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,7 +194,7 @@ CREATE TABLE `Peliculas` (
   PRIMARY KEY (`ID`),
   KEY `id_idiomaOriginal` (`id_idiomaOriginal`),
   CONSTRAINT `Peliculas_ibfk_1` FOREIGN KEY (`id_idiomaOriginal`) REFERENCES `Idiomas` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,7 +203,7 @@ CREATE TABLE `Peliculas` (
 
 LOCK TABLES `Peliculas` WRITE;
 /*!40000 ALTER TABLE `Peliculas` DISABLE KEYS */;
-INSERT INTO `Peliculas` VALUES (1,3,'1985-07-03',111,19000000,381109762,'****','The first film of the trilogy as teenager Marty Mcfly travels back in time with help from his friend and time machine inventor Dr. Brown. Marty travels from 1985 back to 1955 running into people he knows like his parents. When it’s time to go back to the future Marty runs into a few unforeseen problems and time is running out.');
+INSERT INTO `Peliculas` VALUES (1,3,'1985-07-03',111,19000000,381109762,'****','The first film of the trilogy as teenager Marty Mcfly travels back in time with help from his friend and time machine inventor Dr. Brown. Marty travels from 1985 back to 1955 running into people he knows like his parents. When it’s time to go back to the future Marty runs into a few unforeseen problems and time is running out.'),(2,3,'1989-11-22',108,40000000,332000000,'pg-13','Back to the Future 2 is the second and most complicated film of the series. The film has alternate dimensions, time-traveling mishaps, and a disrupted future caused by Marty Mcfly’s accidental alteration of past evens. An exhilarating story with exciting special affect make this a fun movie to watch.'),(3,3,'1990-05-25',118,40000000,-1857967296,'PG13','resumen pendiente');
 /*!40000 ALTER TABLE `Peliculas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,7 +231,7 @@ CREATE TABLE `PeliculasEnSagas` (
 
 LOCK TABLES `PeliculasEnSagas` WRITE;
 /*!40000 ALTER TABLE `PeliculasEnSagas` DISABLE KEYS */;
-INSERT INTO `PeliculasEnSagas` VALUES (1,4,1);
+INSERT INTO `PeliculasEnSagas` VALUES (1,4,1),(2,4,2),(3,4,3);
 /*!40000 ALTER TABLE `PeliculasEnSagas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,7 +250,7 @@ CREATE TABLE `Personas` (
   `Genero` varchar(15) NOT NULL DEFAULT 'N/E',
   `LugarDeNacimiento` varchar(255) NOT NULL DEFAULT 'N/E',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,7 +259,7 @@ CREATE TABLE `Personas` (
 
 LOCK TABLES `Personas` WRITE;
 /*!40000 ALTER TABLE `Personas` DISABLE KEYS */;
-INSERT INTO `Personas` VALUES (1,'N/E','-','1900-01-01','N/E','N/E'),(2,'Robert','Zemeckis','1952-05-14','Masculino','Chicago,Illinois,EEUU'),(3,'Michael','Fox','1961-06-09','Masculino','Edmonton, Canada');
+INSERT INTO `Personas` VALUES (1,'N/E','-','1900-01-01','N/E','N/E'),(2,'Robert','Zemeckis','1952-05-14','Masculino','Chicago,Illinois,EEUU'),(3,'Michael','Fox','1961-06-09','Masculino','Edmonton, Canada'),(4,'Christopher','Lloyd','1938-10-22','Masculino','Sramford, Connecticut, Estados Unidos'),(5,'Lea','Thompson','1961-05-31','Femenino','Rochester, Minnesota, Estados Unidos'),(6,'Crispin','Glover','1964-04-20','Masculino','Nueva York, Nueva York, Estados Unidos'),(7,'Bob','Gale','1951-05-25','Masculino','University City, Misuri, Estados Unidos'),(8,'Harry','Keramidas','1940-08-31','Masculino','Detroit, Michigan, Estados Unidos');
 /*!40000 ALTER TABLE `Personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -298,7 +298,7 @@ CREATE TABLE `Roles` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Descripcion` varchar(65) NOT NULL DEFAULT '-',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -307,7 +307,7 @@ CREATE TABLE `Roles` (
 
 LOCK TABLES `Roles` WRITE;
 /*!40000 ALTER TABLE `Roles` DISABLE KEYS */;
-INSERT INTO `Roles` VALUES (1,'Director'),(2,'Productor'),(3,'Editor'),(4,'Actor'),(5,'Voz');
+INSERT INTO `Roles` VALUES (1,'Director'),(2,'Productor'),(3,'Editor'),(4,'Actor'),(5,'Voz'),(6,'Autor');
 /*!40000 ALTER TABLE `Roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -383,7 +383,7 @@ CREATE TABLE `Titulos` (
 
 LOCK TABLES `Titulos` WRITE;
 /*!40000 ALTER TABLE `Titulos` DISABLE KEYS */;
-INSERT INTO `Titulos` VALUES ('Volver al futuro 1',2,1),('Back to the future',3,1),('De retour vers le futur',4,1);
+INSERT INTO `Titulos` VALUES ('Volver al futuro 1',2,1),('Back to the future',3,1),('De retour vers le futur',4,1),('Back to the future 2',3,2),('Volver al futuro 2',2,2),('Back to the Future III',3,3);
 /*!40000 ALTER TABLE `Titulos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -424,4 +424,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-20 23:57:38
+-- Dump completed on 2023-06-23 20:44:31

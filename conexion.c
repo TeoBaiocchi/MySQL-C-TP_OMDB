@@ -62,6 +62,7 @@ void imprimir_menu()
 	printf("11- Agregar nominacion a pelicula\n");
 	printf("12- Agregar persona a participacion en pelicula\n");
 	printf("13- Agregar genero a pelicula\n");
+	printf("14- Agregar personaje\n");
 	printf("0- Salir\n");
 }
 
@@ -159,7 +160,7 @@ void imprimir_peliculas_titulo_original(MYSQL *conn)
 {
 	MYSQL_RES *res;
 	MYSQL_ROW row;
-	if (mysql_query(conn, "SELECT P.ID, T.Titulo FROM Peliculas P INNER JOIN Titulos T ON P.ID = T.id_pelicula WHERE T.id_idioma = P.id_idiomaOriginal;"))
+	if (mysql_query(conn, "SELECT P.ID, T.Titulo FROM Peliculas P INNER JOIN Titulos T ON P.ID = T.id_Pelicula WHERE T.id_Idioma = P.id_IdiomaOriginal;"))
 	{
 		fprintf(stderr, "%s\n", mysql_error(conn));
 		exit(1);
@@ -427,7 +428,7 @@ void agregar_pelicula(MYSQL *conn)
 	while (getchar() != '\n')
 		;
 
-	sprintf(query, "INSERT INTO Peliculas (id_idiomaOriginal, AnioPublicacion, Duracion, Presupuesto, RecaudacionTaquilla, Rating, Resumen) VALUES ('%d', '%s', '%d', '%d', '%d', '%s', '%s');", idioma, fechaPublicacion, duracion, presupuesto, recaudacion, rating, resumen);
+	sprintf(query, "INSERT INTO Peliculas (id_IdiomaOriginal, AnioPublicacion, Duracion, Presupuesto, RecaudacionTaquilla, Rating, Resumen) VALUES ('%d', '%s', '%d', '%d', '%d', '%s', '%s');", idioma, fechaPublicacion, duracion, presupuesto, recaudacion, rating, resumen);
 	mysql_execute_query(conn, query);
 }
 
@@ -435,7 +436,7 @@ void imprimir_participacion_peliculaTitulo_personaNombre(MYSQL *conn)
 {
 	MYSQL_RES *res;
 	MYSQL_ROW row;
-	if (mysql_query(conn, "SELECT Part.ID AS ID, Titulos.Titulo AS Pelicula, CONCAT(Personas.Nombre, ' ', Personas.Apellido) AS Persona FROM Participacion Part INNER JOIN Personas ON Part.id_Persona = Personas.ID INNER JOIN Peliculas ON Part.id_Pelicula = Peliculas.ID INNER JOIN Titulos ON Peliculas.ID = Titulos.id_pelicula WHERE Titulos.id_idioma = Peliculas.id_idiomaOriginal;"))
+	if (mysql_query(conn, "SELECT Part.ID AS ID, Titulos.Titulo AS Pelicula, CONCAT(Personas.Nombre, ' ', Personas.Apellido) AS Persona FROM Participacion Part INNER JOIN Personas ON Part.id_Persona = Personas.ID INNER JOIN Peliculas ON Part.id_Pelicula = Peliculas.ID INNER JOIN Titulos ON Peliculas.ID = Titulos.id_Pelicula WHERE Titulos.id_Idioma = Peliculas.id_IdiomaOriginal;"))
 	{
 		fprintf(stderr, "%s\n", mysql_error(conn));
 		exit(1);
@@ -472,7 +473,7 @@ void agregar_titulo_pelicula(MYSQL *conn)
 	while (getchar() != '\n')
 		;
 
-	sprintf(query, "INSERT INTO Titulos (Titulo, id_idioma, id_pelicula) VALUES ('%s', '%d', '%d')", titulo, idioma, pelicula);
+	sprintf(query, "INSERT INTO Titulos (Titulo, id_Idioma, id_Pelicula) VALUES ('%s', '%d', '%d')", titulo, idioma, pelicula);
 	mysql_execute_query(conn, query);
 }
 
@@ -500,7 +501,7 @@ void agregar_titulo_saga(MYSQL *conn)
 	while (getchar() != '\n')
 		;
 
-	sprintf(query, "INSERT INTO TitulosSagas (Titulo, id_idioma, id_saga) VALUES ('%s', '%d', '%d')", titulo, idioma, saga);
+	sprintf(query, "INSERT INTO TitulosSagas (Titulo, id_Idioma, id_Saga) VALUES ('%s', '%d', '%d')", titulo, idioma, saga);
 	mysql_execute_query(conn, query);
 }
 
@@ -561,11 +562,11 @@ void agregar_nominacion_pelicula(MYSQL *conn)
 
 	if (estado == 1)
 	{
-		sprintf(query, "INSERT INTO Nominaciones (id_pelicula, id_premio, Estado) VALUES ('%d', '%d', '%s')", pelicula, premio, "Nominada");
+		sprintf(query, "INSERT INTO Nominaciones (id_Pelicula, id_Premio, Estado) VALUES ('%d', '%d', '%s')", pelicula, premio, "Nominada");
 	}
 	else
 	{
-		sprintf(query, "INSERT INTO Nominaciones (id_pelicula, id_premio, Estado) VALUES ('%d', '%d', '%s')", pelicula, premio, "Ganadora");
+		sprintf(query, "INSERT INTO Nominaciones (id_Pelicula, id_Premio, Estado) VALUES ('%d', '%d', '%s')", pelicula, premio, "Ganadora");
 	}
 
 	mysql_execute_query(conn, query);
@@ -619,7 +620,7 @@ void agregar_genero_pelicula(MYSQL *conn)
 	while (getchar() != '\n')
 		;
 
-	sprintf(query, "INSERT INTO GenerosPorPelicula (id_pelicula, id_genero) VALUES ('%d', '%d');", pelicula, genero);
+	sprintf(query, "INSERT INTO GenerosPorPelicula (id_Pelicula, id_Genero) VALUES ('%d', '%d');", pelicula, genero);
 	mysql_execute_query(conn, query);
 }
 
